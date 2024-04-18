@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Parking Spot</title>
+    <!-- Include Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Include fontawesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
+
+    <script src="/static/scripts.js"></script>
+
+    <!-- Add custom styles here or in an external stylesheet -->
+    <style>
+        body {
+            padding: 20px;
+        }
+
+        .booking-form {
+            max-width: 50%;
+            margin: 0 auto;
+            background: #f7f7f7;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+            .booking-form h2 {
+                text-align: center;
+                margin-bottom: 25px;
+            }
+
+            .booking-form p {
+                /* Optional: Set a fixed width or other styling properties */
+                white-space: normal;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .booking-form .form-check {
+                margin-bottom: 15px;
+            }
+
+            .booking-form .form-check-label {
+                margin-left: 5px;
+            }
+
+            .booking-form .form-check input {
+                position: relative;
+                top: 2px;
+            }
+
+            .booking-form .confirm-btn {
+                width: 100%;
+                padding: 10px;
+                font-size: 1.2em;
+            }
+    </style>
+</head>
+<body>
+    <div class="booking-form">
+        <div class="spot-details">
+            <div class="container-fluid">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-8">
+                        <!-- Your booking form and details go here -->
+                        <div class="text-center">
+                            <h2>Spot #{{ spot['id'] }}</h2>
+                            <p><i class="{{ get_fontawesome_class(spot['type']) }}" aria-hidden="true"></i> {{ spot['type'] }}</p>
+                            <p>{{ spot['location'] }}</p>
+                            <p><strong>${{ spot['price'] }}</strong></p>
+                            <p><strong style="color: {{ 'green' if available else 'red' }}">{{ 'Available' if available else 'Unavailable' }}</strong></p>
+                            {% if not available %}
+                            <p>Next available: {{ next_available_date }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <form action="{{ url_for('confirm_booking') }}" method="post">
+                <div class="form-group">
+                    <label for="startDate">Start Date:</label>
+                    <input type="date" id="startDate" name="start_date" class="form-control"
+                           value="{{ request.args.get('start_date', default_start_date) }}"
+                           min="{{ default_start_date }}">
+                </div>
+                <div class="form-group">
+                    <label for="endDate">End Date:</label>
+                    <input type="date" id="endDate" name="end_date" class="form-control"
+                           value="{{ request.args.get('end_date', default_end_date) }}"
+                           min="{{ default_start_date }}">
+                </div>
+                <!-- Confirm booking button -->
+                <button type="submit" class="btn btn-primary confirm-btn" {{ 'disabled' if not available }}>Confirm Booking</button>
+            </form>
+
+        </div>
+    <!-- Include Bootstrap's JS and Popper.js for full functionality -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

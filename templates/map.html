@@ -1,0 +1,143 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Parking Spots Map</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Include Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+    <!-- Include styling -->
+    <link rel="stylesheet" href="/static/css/styles.css" />
+
+    <!-- Include bootstrap -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+
+    <!-- Include fontawesome -->
+    <link href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" rel="stylesheet">
+
+    <!-- Include inter font-->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+
+    <!-- Include Leaflet JavaScript -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <!-- Include MarkerCluster JavaScript -->
+    <script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
+
+    <!-- Include Filtering UI + other ha -->
+    <script src="/static/scripts.js"></script>
+
+    <style>
+        #mapid {
+            height: 600px;
+        }
+    </style>
+</head>
+<body>
+    <h2>CarSpot Map</h2>
+    <!-- Filter UI elements wrapped in Bootstrap's classes -->
+    <div id="filters" class="form-inline mb-3 mt-3 justify-content-center">
+        <div class="form-group mr-2">
+            <label for="type">Select Type:</label>
+            <select id="type" class="form-control" aria-label="Select Type">
+                <option value="All">All Types</option>
+                <option value="Standard">Standard</option>
+                <option value="Electric">Electric</option>
+                <option value="Handicap">Handicap</option>
+            </select>
+        </div>
+
+        <div class="form-group mr-2">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <input type="range" id="price" class="custom-range" min="{{ min_price }}" max="{{ max_price }}" value="{{ min_price }}" step="0.001" oninput="updatePriceValue(this.value)" aria-label="Price Range">
+
+        </div>
+
+        <span id="priceValue" class="badge badge-primary mr-2">$0</span>
+
+        <input type="date" id="filterStartDate" name="start_date">
+        <input type="date" id="filterEndDate" name="end_date">
+        <button onclick="applyFilters()" class="btn custom-apply-filters">Apply Filters</button>
+    </div>
+
+    <!-- Include Bootstrap's JS and Popper.js for full functionality -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <div id="mapid"></div>
+    <script>
+        var mymap = L.map('mapid').setView([51.2277, 6.7735], 13);
+
+
+    L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+        attribution:
+            'Programming/UI/UX © <a href="https://www.linkedin.com/in/matteo-stassin-01120b159/">Matteo Stassin</a> | Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+        maxZoom: 18,
+        id: 'carspot/clubn5frg019101qs58gw64av', // Ensure this is correct and published
+        tileSize: 512,
+        zoomOffset: -1,
+        accessToken: 'pk.eyJ1IjoiY2Fyc3BvdCIsImEiOiJjbHVianZ2cGwwNzRpMmpuemw0dWVsc3ZrIn0.05O5C9FQs0_aZx_pkgjBQg'
+    }).addTo(mymap);
+    var parkingSpotIcon = L.icon({
+        iconUrl: '/static/images/map_clusters/point_icon.png',
+        iconSize: [25, 25],
+        iconAnchor: [12.5, 25],
+        popupAnchor: [0, -25]
+    });
+
+    // Initialize the cluster group
+    var clusterGroup = L.markerClusterGroup({
+        maxClusterRadius: 50, // Adjust the cluster radius as needed
+        disableClusteringAtZoom: 15,
+        iconCreateFunction: function (cluster) {
+            var childCount = cluster.getChildCount();
+            var size, className;
+
+            if (childCount <= 20) {
+                size = L.point(40, 41); // Small size
+                className = 'small';
+            } else if (childCount > 20 && childCount <= 50) {
+                size = L.point(60, 62); // Medium size
+                className = 'medium';
+            } else {
+                size = L.point(75, 77); // Large size
+                className = 'large';
+            }
+
+            // Create a divIcon with an image and a number label underneath it
+            return L.divIcon({
+                html: `<div class="cluster-marker">
+                    <img src="../static/images/map_clusters/marker-cluster-${className}.png" />
+                    <span class="marker-number">${childCount}<span class="spots-text"> spots</span></span>
+                </div>`,
+                className: 'cluster-custom', // Custom class for styling
+                iconSize: size,
+                iconAnchor: [size.x / 2, size.y]
+            });
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Fetch and update the map with parking spots
+        var parkingSpots = {{ parking_spots | tojson | safe }};
+        updateMap(parkingSpots);
+
+        var priceSlider = document.getElementById('price');
+
+        // Set the initial values for the slider
+        priceSlider.min = {{ min_price }};
+        priceSlider.max = {{ max_price }};
+        priceSlider.value = {{ min_price }};
+
+        // Update the display
+        updatePriceValue(priceSlider.value);
+    });
+
+    </script>
+
+
+</body>
+</html>
