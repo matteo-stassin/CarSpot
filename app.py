@@ -21,6 +21,11 @@ def get_db_connection():
     conn.row_factory = sqlite3.Row  # This enables column access by name: row['column_name']
     return conn
 
+@app.route('/')
+@app.route('/index')
+def index():
+    return render_template('index.html')
+
 @app.route('/map')
 def show_map():
     conn = get_db_connection()
