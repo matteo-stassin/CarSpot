@@ -129,7 +129,7 @@ def initialize_db():
 
     # Insert random parking spots data
     spot_ids = []  # List to keep track of the spot IDs
-    for _ in range(4000):
+    for _ in range(2000):
         lat, lng = random_coordinates()
         spot_type = random.choice(types)
         c.execute('''
