@@ -135,7 +135,7 @@ def initialize_db():
         c.execute('''
             INSERT INTO parking_spots (location, type, price, lat, lng) VALUES (?, ?, ?, ?, ?)
         ''', (
-            'Random Düsseldorf Location', spot_type, random.uniform(1, 10), lat, lng
+            'Random Dusseldorf Location', spot_type, random.uniform(1, 10), lat, lng
         ))
         spot_ids.append(c.lastrowid)  # Append the ID of the newly created spot
 
