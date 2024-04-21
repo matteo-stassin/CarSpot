@@ -1,0 +1,272 @@
+#mapid {
+    height: 600px;
+    margin-top: 0px; /* Add some space above the map */
+}
+
+h2 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 900; /* Inter Black */
+}
+
+/* Add this CSS to your map.css file */
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+    .navbar-brand img {
+        height: auto;
+        max-height: 80px; /* Adjust if necessary */
+        width: auto;
+    }
+
+    .navbar-brand .tagline {
+        font-size: 1rem;
+        margin-left: 0.5rem;
+        color: #495464;
+        align-self: center;
+    }
+
+.header-container {
+    display: flex;
+    justify-content: space-between; /* Align children (navbar and filter) on opposite ends */
+    align-items: center;
+    background-color: #f8f9fa; /* Consistent background color */
+    padding: 0.5rem 1rem; /* Consistent padding */
+    width: 100%; /* Ensures the container spans the full width */
+    margin-bottom: 0;
+}
+
+/* Prevent the navbar from taking up too much space */
+.navbar {
+    flex-grow: 0; /* Navbar should not grow to fill space */
+    flex-shrink: 0; /* Prevent navbar from shrinking */
+}
+
+.filter-container {
+    display: flex;
+    flex-wrap: wrap; /* Allows elements to wrap to the next line on smaller screens */
+    gap: 10px; /* Spacing between elements */
+    align-items: center; /* Align items vertically */
+    justify-content: flex-start; /* Align items to the start of the container */
+}
+
+    .filter-container > div {
+        flex: 1; /* Allows each child div to grow */
+        min-width: 160px; /* Sets a minimum width for each filter element */
+    }
+
+.available-spots-filter {
+    order: 5; /* Position the checkbox to be last before the button */
+    flex-basis: 100%; /* Forces the checkbox to a new line */
+    justify-content: flex-start; /* Aligns the checkbox to the start */
+    padding-top: 0.5rem; /* Adds some space between the checkbox and other elements */
+    display: flex;
+    align-items: center; /* Centers the checkbox and label vertically */
+    padding-top: 0.5rem; /* Adds space above the checkbox */
+}
+
+.btn.custom-apply-filters {
+    order: 6; /* Ensures the button comes after the checkbox */
+}
+
+
+/* Adjust the individual filter elements to not grow too large */
+#filters select, #filters input, #filters .btn {
+    flex-grow: 1;
+    flex-basis: auto; /* Allow them to grow and shrink as needed */
+    max-width: calc(100% - 20px); /* Prevent any single element from taking full width */
+}
+
+/* Ensure the dropdown doesn't collapse into the button group on smaller screens */
+.form-inline .dropdown, .form-inline .input-group {
+    flex-shrink: 0; /* Prevent these elements from shrinking */
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 767px) {
+    .header-container {
+        flex-wrap: wrap; /* Allow elements to wrap onto the next line */
+    }
+
+    .filter-container, .navbar {
+        width: 100%; /* Full width on smaller screens */
+        justify-content: space-between; /* Spread out on their own line */
+        padding-top: 0.5rem; /* Add padding between wrapped items */
+    }
+
+    /* Adjust form elements to be full width on smaller screens */
+    #filters select, #filters input, #filters .btn {
+        width: 100%;
+        margin-bottom: 0.5rem; /* Add margin between wrapped items */
+    }
+}
+
+
+
+.form-check-label {
+    font-size: 0.875rem; /* Adjust the font size as needed */
+    user-select: none; /* Improves the user experience */
+}
+
+/* You might want to wrap these in a media query to only apply it under certain conditions */
+
+
+
+#filters {
+    margin: 0; /* Remove default margin */
+    padding: 10px 0; /* Adjust vertical padding only */
+    flex-grow: 1; /* Allows the filter bar to fill available space */
+    background-color: #f2f4f6;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+    #filters label {
+        font-weight: bold;
+        color: #333;
+        margin: 0 10px;
+    }
+
+    #filters select, #filters input[type="range"] {
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 5px;
+    }
+    #filters option {
+        font-family: 'Inter', sans-serif;
+        font-weight: 300; /* Inter Light */
+    }
+
+
+
+
+#priceValue {
+    padding: 3px 7px;
+    background-color: #132e3b;
+    color: white;
+    border-radius: 3px;
+    font-size: 1rem;
+}
+
+.btn.custom-apply-filters {
+    background-color: #fdc601; /* Replace with your desired color */
+    color: white; /* Choose a text color that contrasts well with the background */
+}
+
+    .btn.custom-apply-filters:hover {
+        background-color: #132d37; /* A slightly darker shade for hover effect */
+        color: white;
+    }
+
+
+.cluster-custom {
+    position: relative;
+    text-align: center;
+    width: 60px;
+    height: 62px;
+}
+
+.marker-cluster-small, .marker-cluster-medium, .marker-cluster-large {
+    position: relative;
+    text-align: center;
+}
+
+    .marker-cluster-small img, .marker-cluster-medium img, .marker-cluster-large img {
+        display: block;
+        width: 100%;
+        height: auto;
+    }
+
+.marker-cluster-small {
+    width: 40px;
+    height: 41px;
+}
+
+.marker-cluster-medium {
+    width: 60px;
+    height: 62px;
+}
+
+.marker-cluster-large {
+    width: 75px;
+    height: 77px;
+}
+
+.cluster-custom .marker-number {
+    position: absolute;
+    width: 100%;
+    left: -2px;
+    top: 100%;
+    white-space: nowrap; /* Prevents wrapping onto a new line */
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+    color: black;
+    font-size: 14px;
+    color: #fb3445;
+    line-height: 1.2; /* Adjust as needed to align properly */
+}
+
+.cluster-custom .spots-text {
+    font-family: 'Inter', sans-serif; /* Less emphasis on the text than on the number */
+    font-weight: 300; /* extra light*/
+    font-size: 10px; /* Smaller font size for the descriptive text */
+    color: #122d37;
+}
+
+body, .popup-content {
+    font-family: 'Inter', sans-serif;
+    font-weight: 900; /* Inter Black */
+}
+
+.popup-content {
+    text-align: center;
+    background-color: #fff;
+    border-radius: .25rem;
+    border: none;
+    padding: 15px;
+}
+
+    .popup-content h3 {
+        font-size: 1rem;
+        margin-bottom: .5rem;
+    }
+
+    .popup-content .price, .popup-content .spot-type {
+        font-size: .875rem;
+        margin-bottom: .5rem;
+    }
+
+    .popup-content button {
+        font-size: .875rem;
+        text-align: center;
+        border: none;
+        margin-top: .5rem;
+        padding: .375rem .75rem;
+        border-radius: .25rem;
+        background-color: #f92c41;
+        color: white;
+        cursor: pointer;
+        line-height: 1.5;
+        width: 100%;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+        .popup-content button:hover {
+            background-color: #df2935;
+        }
+
+        .popup-content .spot-type i {
+            margin-right: 4px; /* Adjust the value as needed */
+        }
+
+@media (min-width: 992px) { /* Adjust the min-width as necessary */
+    .navbar-expand-lg .navbar-collapse {
+        flex-direction: row; /* Make sure the direction is row */
+    }
+}

@@ -1,0 +1,192 @@
+/* Reset and base styles */
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html, body {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	min-height: 100%;
+}
+
+body {
+	font-family: 'Inter', sans-serif;
+	line-height: 1.6;
+	background-color: #D8E2DC;
+	color: #495464;
+}
+
+/* Define color palette */
+:root {
+	--navbar-bg-color: #FFD700;
+	--map-bg-color: #E1E2E3;
+	--dark-text-color: #495464;
+	--light-text-color: #ffffff;
+	--overlay-color: rgba(5, 19, 25, 0.4);
+}
+
+/* Navigation Bar */
+.navbar-brand {
+	display: flex;
+	align-items: center; /* Center items vertically */
+}
+
+.navbar-brand {
+	display: flex;
+	align-items: center; /* Align items vertically */
+	gap: 10px; /* Adjust the space between logo and tagline */
+}
+
+	.navbar-brand img {
+		height: auto;
+		width: auto; /* Keep the width auto to maintain aspect ratio */
+	}
+
+	.navbar-brand .tagline {
+		font-size: 1rem;
+		margin-left: 0.5rem;
+		color: #495464; /* Adjust to desired color */
+		align-self: center; /* Aligns the tagline vertically */
+	}
+
+/* Main Banner styles */
+.main-banner {
+	position: relative;
+	text-align: center;
+	padding: 1rem 0; /* Adjust the padding to suit your layout */
+	background-color: rgba(45, 58, 110, 0.3);
+}
+
+.map-container {
+	position: relative;
+	max-width: 100%; /* Full width of the container */
+}
+
+	.map-container img {
+		width: 100%;
+		height: 500px;
+		object-fit: cover; /* Adjust to cover the space */
+		filter: drop-shadow(2px 4px 6px var(--dark-color)); /* Shadow effect */
+		position: relative;
+	}
+
+	.map-container::after {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background-color: rgba(45, 58, 110, 0.3);
+		z-index: 2; /* Overlay should be above the image */
+	}
+.btn-check-availability {
+	position: absolute;
+	overflow: hidden; /* Hide overflow to clip the pseudo-element */
+	top: 50%; /* Center vertically on the map */
+	left: 50%; /* Center horizontally on the map */
+	transform: translate(-50%, -50%); /* Adjust to perfectly center the button */
+	padding: 1rem 2rem;
+	border-radius: 30px; /* More pronounced rounded corners */
+	font-weight: 600;
+	font-size: 1.25rem;
+	cursor: pointer;
+	background-color: var(--dark-text-color);
+	color: var(--light-text-color);
+	border: 2px solid transparent; /* Add a transparent border */
+	z-index: 3;
+}
+
+	.btn-check-availability:hover {
+		background-color: var(--dark-color);
+		color: var(--primary-color);
+		border-color: var(--light-text-color); /* Keep the border color on hover */
+	}
+
+	.btn-check-availability::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: -100%;
+		width: 100%;
+		height: 100%;
+		background: url('../static/images/index_img/map_banner.png') center no-repeat;
+		transition: left 0.3s ease;
+		z-index: 0;
+	}
+
+	.btn-check-availability:hover::before {
+		left: 0;
+	}
+
+	.btn-check-availability span {
+		position: relative;
+		z-index: 1; /* Ensure the text appears above the pseudo-element */
+		transition: opacity 0.3s ease;
+	}
+
+	.btn-check-availability:hover span {
+		opacity: 0; /* Fade out the text on hover */
+	}
+
+
+/* Why us section */
+.banner-white {
+	background-color: #ffffff;
+	padding: 2rem 0;
+	text-align: center;
+	position: relative;
+	top: -2rem; /* Adjust based on your layout */
+}
+
+.banner-places {
+	display: flex;
+	justify-content: space-around;
+	flex-wrap: wrap;
+	gap: 1rem;
+}
+
+.places {
+	width: 100%;
+	max-width: 200px;
+	margin: 0.5rem; /* Adjust margins as needed */
+	border-radius: 10px;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.place-text {
+	font-size: 1rem;
+	color: var(--text-color);
+	margin-top: 0.5rem;
+}
+
+/* Media queries */
+@media (max-width: 768px) {
+	.navbar {
+		padding: 0.5rem 1rem;
+	}
+
+	.navbar-brand img {
+		width: 80px; /* Adjust logo size on smaller screens */
+	}
+
+	.main-banner h1 {
+		font-size: 1.5rem;
+	}
+
+	.btn-check-availability {
+		font-size: 1rem;
+		padding: 0.5rem 1rem;
+	}
+
+	.banner-places {
+		flex-direction: column;
+	}
+
+	.places {
+		max-width: 90%; /* Full width on small screens */
+	}
+}

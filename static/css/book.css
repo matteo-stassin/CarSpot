@@ -1,0 +1,80 @@
+body {
+    padding: 20px;
+    background-color: #e5e5e5; /* A light grey backdrop */
+}
+
+.booking-form {
+    max-width: 50%;
+    margin: 0 auto;
+    background: #f7f7f7;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+    .booking-form h2 {
+        text-align: center;
+        margin-bottom: 25px;
+    }
+
+    .booking-form p {
+        /* Optional: Set a fixed width or other styling properties */
+        white-space: normal;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .booking-form .form-check {
+        margin-bottom: 15px;
+    }
+
+    .booking-form .form-check-label {
+        margin-left: 5px;
+    }
+
+    .booking-form .form-check input {
+        position: relative;
+        top: 2px;
+    }
+
+    .booking-form .confirm-btn {
+        width: 100%;
+        padding: 10px;
+        font-size: 1.2em;
+    }
+
+/* Add this CSS to your map.css file */
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+    .navbar-brand img {
+        height: auto;
+        max-height: 80px; /* Adjust if necessary */
+        width: auto;
+    }
+
+    .navbar-brand .tagline {
+        font-size: 1rem;
+        margin-left: 0.5rem;
+        color: #495464;
+        align-self: center;
+    }
+
+.header-container {
+    display: flex;
+    justify-content: space-between; /* Align children (navbar and filter) on opposite ends */
+    align-items: center;
+    background-color: #f8f9fa; /* Consistent background color */
+    padding: 0.5rem 1rem; /* Consistent padding */
+    width: 100%; /* Ensures the container spans the full width */
+    margin-bottom: 20px;
+}
+
+/* Prevent the navbar from taking up too much space */
+.navbar {
+    flex-grow: 0; /* Navbar should not grow to fill space */
+    flex-shrink: 0; /* Prevent navbar from shrinking */
+}

@@ -1,0 +1,76 @@
+body {
+    background-color: #e5e5e5; /* A light grey backdrop */
+    font-family: 'Inter', sans-serif;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.container {
+    width: 100%;
+    max-width: 400px; /* Narrower for a more modern look */
+    margin: 1rem auto;
+    background-color: #fff;
+    padding: 1.5rem;
+    border-radius: 8px; /* Slightly larger radius for a softer look */
+    box-shadow: 0 12px 24px -4px rgba(0, 0, 0, 0.1); /* Larger shadow for more depth */
+    text-align: center; /* Center align the text for a cohesive look */
+}
+
+h1 {
+    color: #333;
+    font-size: 1.75rem; /* Larger for impact */
+    margin-bottom: 0.5rem; /* Less space after heading */
+}
+
+.receipt {
+    background-color: #fafafa;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.05);
+    margin-bottom: 2rem;
+}
+
+/* Style for buttons */
+.btn {
+    display: block; /* Full width */
+    width: 100%;
+    padding: 0.75rem 1.5rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    border-radius: 8px;
+    font-size: 0.9rem; /* Smaller font for elegance */
+    text-transform: uppercase; /* Uppercase text for a design touch */
+    letter-spacing: 0.05rem; /* Letter spacing for a polished look */
+    transition: background-color 0.3s ease; /* Smooth transition for hover effects */
+}
+
+.btn-directions {
+    background-color: #ff5722;
+    border-color: #ff5722;
+    color: #fff; /* White text on colored buttons for readability */
+}
+
+    .btn-directions:hover {
+        background-color: #e64a19;
+        border-color: #e64a19;
+    }
+
+.btn-return {
+    background-color: #00a1ff; /* Changed color to match logo's accent */
+    border-color: #00a1ff;
+    color: #fff;
+    margin-top: 1rem; /* More space above the first button */
+}
+
+    .btn-return:hover {
+        background-color: #008ae6;
+        border-color: #008ae6;
+    }
+
+/* Additional styling can be placed here */

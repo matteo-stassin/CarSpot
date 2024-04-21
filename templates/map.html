@@ -1,13 +1,23 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <title>Parking Spots Map</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/icons/favicon-16x16.png">
+    <link rel="manifest" href="/static/icons/site.webmanifest">
+    <link rel="mask-icon" href="/static/icons/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/static/icons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/static/icons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <title>CarSpot Map</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Include Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 
     <!-- Include styling -->
-    <link rel="stylesheet" href="/static/css/styles.css" />
+    <link rel="stylesheet" href="/static/css/map.css" />
 
     <!-- Include bootstrap -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
@@ -36,54 +46,62 @@
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container">
-            <a class="navbar-brand" href="#">CarSpot Map</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/">Home</a>
-                    </li>
-                </ul>
+    <div class="header-container">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container">
+                <a class="navbar-brand" href="/">
+                    <img src="../static/images/index_img/logo.png" alt="CarSpot Logo">
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="/">Map <span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/index">Home</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- Remaining navbar structure -->
             </div>
-        </div>
-    </nav>
+        </nav>
 
-    <!-- Filter UI elements wrapped in Bootstrap's classes -->
-    <div id="filters" class="form-inline mb-3 mt-3 justify-content-center">
-        <div class="form-group mr-2">
-            <label for="type">Select Type:</label>
+        <div id="filters" class="filter-container form-inline">
             <select id="type" class="form-control" aria-label="Select Type">
                 <option value="All">All Types</option>
                 <option value="Standard">Standard</option>
                 <option value="Electric">Electric</option>
                 <option value="Handicap">Handicap</option>
             </select>
+
+            <div class="form-group mr-2">
+                <meta name="viewport" content="width=device-width, initial-scale=1">
+                <input type="range" id="price" class="custom-range" min="{{ min_price }}" max="{{ max_price }}" value="{{ min_price }}" step="0.001" oninput="updatePriceValue(this.value)" aria-label="Price Range">
+
+            </div>
+
+            <span id="priceValue" class="badge badge-primary mr-2">$0</span>
+
+            <input type="date" id="filterStartDate" name="start_date" min="{{ today }}" value="{{ filter_start_date }}">
+            <input type="date" id="filterEndDate" name="end_date" min="{{ today }}" value="{{ filter_end_date }}">
+
+            <div class="available-spots-filter">
+                <input type="checkbox" id="availableSpotsCheckbox" name="available_spots" class="form-check-input">
+                <label for="availableSpotsCheckbox" class="form-check-label">Only show available spots</label>
+            </div>
+            <button onclick="applyFilters()" class="btn custom-apply-filters">Apply Filters</button>
         </div>
-
-        <div class="form-group mr-2">
-            <meta name="viewport" content="width=device-width, initial-scale=1">
-            <input type="range" id="price" class="custom-range" min="{{ min_price }}" max="{{ max_price }}" value="{{ min_price }}" step="0.001" oninput="updatePriceValue(this.value)" aria-label="Price Range">
-
-        </div>
-
-        <span id="priceValue" class="badge badge-primary mr-2">$0</span>
-
-        <input type="date" id="filterStartDate" name="start_date">
-        <input type="date" id="filterEndDate" name="end_date">
-        <button onclick="applyFilters()" class="btn custom-apply-filters">Apply Filters</button>
     </div>
+        <!-- Include Bootstrap's JS and Popper.js for full functionality -->
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <!-- Include Bootstrap's JS and Popper.js for full functionality -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-    <div id="mapid"></div>
-    <script>
+        <div id="mapid"></div>
+        <script>
         var mymap = L.map('mapid').setView([51.2277, 6.7735], 13);
 
 
@@ -135,6 +153,36 @@
         }
     });
 
+    // Retrieve current start and end dates from the URL or set defaults
+    var queryParams = new URLSearchParams(window.location.search);
+    var defaultStartDate = new Date().toISOString().split('T')[0] + ' 00:00:00';
+    var defaultEndDate = new Date().toISOString().split('T')[0] + ' 23:59:59';
+    var currentStartDate = queryParams.get('start_date') || defaultStartDate;
+    var currentEndDate = queryParams.get('end_date') || defaultEndDate;
+
+    // Update the cluster's spot data when it's clicked
+    clusterGroup.on('clusterclick', function (a) {
+        // Assuming `a.layer.getAllChildMarkers()` is available to get all markers in the cluster
+        a.layer.getAllChildMarkers().forEach(marker => {
+            const spotData = marker.options.spotData; // Ensure spotData is assigned when creating the marker
+            if (spotData) {
+                marker.setPopupContent(createPopupContent(spotData, currentStartDate, currentEndDate));
+
+            }
+        });
+    });
+
+    // Move this outside of the clusterGroup.on('clusterclick', ...) event handler
+    // It should be directly within the <script> tag, not inside any other function.
+    document.body.addEventListener('click', function (event) {
+        if (event.target.matches('.btn-danger.btn-block')) {
+            var spotId = event.target.getAttribute('data-id');
+            var startDate = event.target.getAttribute('data-start-date');
+            var endDate = event.target.getAttribute('data-end-date');
+            bookSpot(spotId, startDate, endDate);
+        }
+    });
+
     document.addEventListener('DOMContentLoaded', function () {
         // Fetch and update the map with parking spots
         var parkingSpots = {{ parking_spots | tojson | safe }};
@@ -143,15 +191,19 @@
         var priceSlider = document.getElementById('price');
 
         // Set the initial values for the slider
-        priceSlider.min = {{ min_price }};
-        priceSlider.max = {{ max_price }};
-        priceSlider.value = {{ min_price }};
+        priceSlider.min = {{ min_price | tojson }};
+        priceSlider.max = {{ max_price | tojson }};
+        priceSlider.value = {{ min_price | tojson }};
 
         // Update the display
         updatePriceValue(priceSlider.value);
+
+        initializeDateInputsAndButton();
+
+        document.getElementById('availableSpotsCheckbox').addEventListener('change', applyFilters);
     });
 
-    </script>
+        </script>
 
 
 </body>

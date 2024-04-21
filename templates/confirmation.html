@@ -1,10 +1,62 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Booking Confirmation</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/icons/favicon-16x16.png">
+    <link rel="manifest" href="/static/icons/site.webmanifest">
+    <link rel="mask-icon" href="/static/icons/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/static/icons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/static/icons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap">
+    <link rel="stylesheet" href="/static/css/confirmation.css">
 </head>
 <body>
-    <h1>Booking Confirmed</h1>
-    <p>Your spot at {{ spot.location }} has been booked.</p>
+    <div class="container">
+        <!-- Confirmation message -->
+        <div>
+            <img src="/static/images/spot_confirmation.png" alt="Confirmed" class="mb-4" style="width:150px; height:auto;">
+            <h1>Booking Confirmed!</h1>
+            <p>Thank you for booking with CarSpot.</p>
+        </div>
+
+        <!-- Receipt box -->
+        <div class="receipt">
+            <h2>Receipt</h2>
+            <p><strong>Spot ID:</strong> <span class="text-muted">#{{ booking['spot_id'] }}</span></p>
+            <p><i class="{{ get_fontawesome_class(booking['type']) }}" aria-hidden="true"></i> {{ booking['type'] }}</p>
+            <p><strong>Location:</strong> <span class="text-muted">{{ booking['location'] }}</span></p>
+            <p><strong>Price:</strong> <span class="text-muted">${{ '%.2f' | format(booking['price']) }}</span></p>
+            <p><strong>Start Date:</strong> <span class="text-muted">{{ booking['start_date'] }}</span></p>
+            <p><strong>End Date:</strong> <span class="text-muted">{{ booking['end_date'] }}</span></p>
+            <div class="buttons">
+                <a href="https://www.google.com/maps?q={{ booking.lat }},{{ booking.lng }}" class="btn btn-directions" target="_blank"><i class="fas fa-directions"></i> Get Directions</a>
+                <a href="/map" class="btn btn-return">
+                    <i class="fas fa-redo"></i> Book another spot!
+                </a>
+
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var form = document.querySelector('.booking-form form');
+            if (form) {
+                form.addEventListener('submit', confirmBooking);
+            } else {
+                console.error('The form was not found in the DOM.');
+            }
+        });
+
+    </script>
 </body>
 </html>
+
