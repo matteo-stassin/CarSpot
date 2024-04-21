@@ -51,9 +51,9 @@ async function applyFilters() {
         if (data.filteredSpots && data.filteredSpots.length > 0) {
             updateMap(data.filteredSpots);
         } else {
-            console.log('No spots found with the selected filters. Perhaps your selected price is too low?');
+            console.log('No spots found with the selected filters.');
             // If no spots are found, it might be useful to indicate this to the user
-            alert('No spots found with the selected filters.');
+            alert('No spots found with the selected filters. Perhaps your selected price is too low?');
         }
     } catch (error) {
         console.error('Error while applying filters:', error);
